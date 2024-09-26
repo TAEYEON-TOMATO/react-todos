@@ -8,6 +8,40 @@ type TodoWriteFormProps = {
   addTodo: () => void
 }
 
+type TodoListProps = {
+  todos: string[]
+}
+
+type TodoListItem = {
+  todo: string
+  index: number
+}
+
+// TodoListの中のTodoListItem　component
+const TodoListItem = ({todo, index} : TodoListItem) => {
+  return (
+    // indexを利用して番号を付けよう
+    <li>{`${index + 1}: ${todo}`}</li>
+  )
+}
+
+// todoList component
+const TodoList = ({todos}: TodoListProps) => {
+  return (
+    <div>
+      {/* todoの表記をulとliで表す */}
+      <ul>
+        {todos.map((todo, index) => 
+          // indexとkeyをpropsで渡す
+          (<TodoListItem key={index} index={index} todo={todo} />)
+        )}
+      </ul>
+    </div>
+
+  )
+}
+
+//　todo入力フォーム component
 const TodoWriteForm = ({newTodoTitle, setNewTodoTile, addTodo}: TodoWriteFormProps) => {
   return (
     <>
@@ -50,7 +84,7 @@ const App = () => {
         />
       </div>
       <hr />
-      <div>{JSON.stringify(todos)}</div>
+      <TodoList todos={todos} />
     </>
   )
 }
