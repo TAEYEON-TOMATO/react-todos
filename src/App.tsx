@@ -1,33 +1,32 @@
 import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [newTodoTitle, setNewTodoTile] = useState('')
+  // string型の配列のタイプに設定
+  const [todos, setTodos] = useState<string[]>([])
 
+  const addTodo = () => {
+    console.log(todos);
+    
+    setTodos([...todos, newTodoTitle])
+    // 入力後にはinputの中身を消す
+    setNewTodoTile('')
+  }
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <input 
+          type="text" 
+          placeholder='Todoを入力してください' 
+          value={newTodoTitle}
+          onChange={(e) => setNewTodoTile(e.target.value)}
+        />
+        &nbsp;
+        <button onClick={addTodo}>追加</button>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <hr />
+      <div>{JSON.stringify(todos)}</div>
     </>
   )
 }
