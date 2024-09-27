@@ -10,31 +10,53 @@ type TodoWriteFormProps = {
 
 type TodoListProps = {
   todos: string[]
+  setTodos: React.Dispatch<React.SetStateAction<string[]>>
 }
 
-type TodoListItem = {
+type TodoListItemProps = {
   todo: string
   index: number
+  setTodos: React.Dispatch<React.SetStateAction<string[]>>
+  todos: string[]
 }
 
 // TodoListの中のTodoListItem　component
-const TodoListItem = ({todo, index} : TodoListItem) => {
+const TodoListItem = ({todo, index, setTodos, todos} : TodoListItemProps) => {
+  
+  const removeTodo = () => {
+    const newTodos = todos.filter((_, _index) => {
+      // 削除ボタンを押したtodoのindexとは異なるindexを持つ
+      return index !== _index
+    });
+    // todoの配列をsetTodosに代入する
+    setTodos(newTodos)
+  }
+  
   return (
     // indexを利用して番号を付けよう
-    <li>{`${index + 1}: ${todo}`}</li>
+    <li>
+      {`${index + 1}: ${todo}`}
+      <button onClick={removeTodo}>削除</button>  
+    </li>
   )
 }
 
 // todoList component
-const TodoList = ({todos}: TodoListProps) => {
+const TodoList = ({todos, setTodos}: TodoListProps) => {
   return (
     <div>
       {/* todoの表記をulとliで表す */}
       <ul>
-        {todos.map((todo, index) => 
+        {todos.map((todo, index) => (
           // indexとkeyをpropsで渡す
-          (<TodoListItem key={index} index={index} todo={todo} />)
-        )}
+          <TodoListItem 
+            key={index} 
+            index={index} 
+            todo={todo}
+            setTodos={setTodos}
+            todos={todos}
+          />
+        ))}
       </ul>
     </div>
 
@@ -84,7 +106,10 @@ const App = () => {
         />
       </div>
       <hr />
-      <TodoList todos={todos} />
+      <TodoList 
+        todos={todos} 
+        setTodos={setTodos}  
+      />
     </>
   )
 }
