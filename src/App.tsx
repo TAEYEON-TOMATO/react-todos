@@ -11,7 +11,7 @@ import './App.css'
 interface TodoWriteFormProps {
   // newTodoTitle: string
   // setNewTodoTile: React.Dispatch<React.SetStateAction<string>>
-  addTodo: (newTodoTitle: string, setNewTodoTitle: React.Dispatch<React.SetStateAction<string>>) => void
+  addTodo: (newTodoTitle: string) => void
   // addTodo: () => void
 }
 
@@ -75,6 +75,16 @@ const TodoList = ({todos, setTodos}: TodoListProps) => {
 const TodoWriteForm = ({ addTodo }: TodoWriteFormProps) => { 
   const [ newTodoTitle, setNewTodoTitle ] = useState("")
 
+  const addTodo2 = () => {
+    console.log("addTodo2");
+    
+    if(newTodoTitle.trim().length == 0) return;
+
+    addTodo(newTodoTitle)
+
+    setNewTodoTitle("")
+  }
+
   return (
     <>
       <input 
@@ -85,7 +95,9 @@ const TodoWriteForm = ({ addTodo }: TodoWriteFormProps) => {
       />
       &nbsp;
       {/* パラメータがある関数をonClickに渡す場合は匿名関数で渡してあげる */}
-      <button onClick={() => addTodo(newTodoTitle, setNewTodoTitle)}>追加</button>
+      <button onClick={addTodo2}>
+        追加
+      </button>
     </>
 
 
@@ -100,13 +112,12 @@ const App = () => {
 
   
   // Todoを追加する関数
-  const addTodo = (newTodoTitle: string, setNewTodoTile: React.Dispatch<React.SetStateAction<string>>) => {
+  const addTodo = (newTitle: string) => {
     // 前と後ろのスペースや空白を入力した時リターンする
-    if(newTodoTitle.trim().length === 0) return;
+    if(newTitle.trim().length === 0) return;
     
-    setTodos([...todos, newTodoTitle.trim()])
+    setTodos([...todos, newTitle.trim()])
     // 入力後にはinputの中身を消す
-    setNewTodoTile('')
     
   }
 
