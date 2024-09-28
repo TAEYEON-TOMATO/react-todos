@@ -1,11 +1,17 @@
 import { useState } from 'react'
 import './App.css'
+// Reactの暗黙的ルール
+// 最上コンポーネントは最低限の
+// 関数とデータはなるべく息子コンポーネントで生成するように
+
+// その理由：父母から渡ってきたuseStateを息子が実行したら
+// 父母が実行されその息子たちも実行されることになる
 
 // propsを受ける時、各propsごとにtypeを設定する
 type TodoWriteFormProps = {
-  newTodoTitle: string
-  setNewTodoTile: React.Dispatch<React.SetStateAction<string>>
-  addTodo: () => void
+  // newTodoTitle: string
+  // setNewTodoTile: React.Dispatch<React.SetStateAction<string>>
+  addTodo: Function
 }
 
 type TodoListProps = {
@@ -22,7 +28,7 @@ type TodoListItemProps = {
 
 // TodoListの中のTodoListItem　component
 const TodoListItem = ({todo, index, setTodos, todos} : TodoListItemProps) => {
-  
+
   const removeTodo = () => {
     const newTodos = todos.filter((_, _index) => {
       // 削除ボタンを押したtodoのindexとは異なるindexを持つ
@@ -64,14 +70,18 @@ const TodoList = ({todos, setTodos}: TodoListProps) => {
 }
 
 //　todo入力フォーム component
-const TodoWriteForm = ({newTodoTitle, setNewTodoTile, addTodo}: TodoWriteFormProps) => {
+// const TodoWriteForm = ({newTodoTitle, setNewTodoTitle, addTodo}: TodoWriteFormProps) => {
+const TodoWriteForm = ({ addTodo }: TodoWriteFormProps) => { 
+  
+  const [ newTodoTitle, setNewTodoTitle ] = useState("")
+
   return (
     <>
       <input 
         type="text" 
         placeholder='Todoを入力してください' 
         value={newTodoTitle}
-        onChange={(e) => setNewTodoTile(e.target.value)}
+        onChange={(e) => setNewTodoTitle(e.target.value)}
       />
       &nbsp;
       <button onClick={addTodo}>追加</button>
@@ -83,14 +93,16 @@ const TodoWriteForm = ({newTodoTitle, setNewTodoTile, addTodo}: TodoWriteFormPro
 
 
 const App = () => {
-  const [newTodoTitle, setNewTodoTile] = useState('')
+  // const [newTodoTitle, setNewTodoTile] = useState('')
   // string型の配列のタイプに設定
   const [todos, setTodos] = useState<string[]>([])
 
+  
   // Todoを追加する関数
-  const addTodo = () => {
+  const addTodo = (newTodoTitle: string, setNewTodoTile: React.Dispatch<React.SetStateAction<string>>) => {
     // 前と後ろのスペースや空白を入力した時リターンする
     if(newTodoTitle.trim().length === 0) return;
+    
     setTodos([...todos, newTodoTitle.trim()])
     // 入力後にはinputの中身を消す
     setNewTodoTile('')
@@ -100,8 +112,6 @@ const App = () => {
     <>
       <div>
         <TodoWriteForm 
-          newTodoTitle={newTodoTitle} 
-          setNewTodoTile={setNewTodoTile} 
           addTodo={addTodo} 
         />
       </div>
