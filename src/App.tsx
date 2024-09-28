@@ -8,10 +8,11 @@ import './App.css'
 // 父母が実行されその息子たちも実行されることになる
 
 // propsを受ける時、各propsごとにtypeを設定する
-type TodoWriteFormProps = {
+interface TodoWriteFormProps {
   // newTodoTitle: string
   // setNewTodoTile: React.Dispatch<React.SetStateAction<string>>
-  addTodo: Function
+  addTodo: (newTodoTitle: string, setNewTodoTitle: React.Dispatch<React.SetStateAction<string>>) => void
+  // addTodo: () => void
 }
 
 type TodoListProps = {
@@ -69,10 +70,9 @@ const TodoList = ({todos, setTodos}: TodoListProps) => {
   )
 }
 
-//　todo入力フォーム component
-// const TodoWriteForm = ({newTodoTitle, setNewTodoTitle, addTodo}: TodoWriteFormProps) => {
+// todo入力フォーム component
+// 
 const TodoWriteForm = ({ addTodo }: TodoWriteFormProps) => { 
-  
   const [ newTodoTitle, setNewTodoTitle ] = useState("")
 
   return (
@@ -84,7 +84,8 @@ const TodoWriteForm = ({ addTodo }: TodoWriteFormProps) => {
         onChange={(e) => setNewTodoTitle(e.target.value)}
       />
       &nbsp;
-      <button onClick={addTodo}>追加</button>
+      {/* パラメータがある関数をonClickに渡す場合は匿名関数で渡してあげる */}
+      <button onClick={() => addTodo(newTodoTitle, setNewTodoTitle)}>追加</button>
     </>
 
 
@@ -106,13 +107,14 @@ const App = () => {
     setTodos([...todos, newTodoTitle.trim()])
     // 入力後にはinputの中身を消す
     setNewTodoTile('')
+    
   }
 
   return (
     <>
       <div>
         <TodoWriteForm 
-          addTodo={addTodo} 
+          addTodo={addTodo}
         />
       </div>
       <hr />
