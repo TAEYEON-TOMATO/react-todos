@@ -3,17 +3,19 @@ import './App.css'
 // Reactの暗黙的ルール
 
 // propsを受ける時、各propsごとにtypeを設定する
+
+// TodoWriteFormパラメータタイプ
 interface TodoWriteFormProps {
   addTodo: (newTodoTitle: string) => void
 
 }
-
+// TodoListパラメータタイプ
 type TodoListProps = {
   todos: string[]
   removeTodo: (index: number) => void
   modifyTodo: (index: number, todo: string) => void
 }
-
+// TodoListItemPropsパラメータタイプ
 type TodoListItemProps = {
   todo: string
   index: number
@@ -51,7 +53,7 @@ const TodoListItem = ({todo, index, removeTodo: _removeTodo, modifyTodo: _modify
 
 
   return (
-    // indexを利用して番号を付けよう
+
     <li>
       &nbsp;
       {
