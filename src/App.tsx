@@ -1,11 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 // Reactの暗黙的ルール
-// 最上コンポーネントは最低限の
-// 関数とデータはなるべく息子コンポーネントで生成するように
-
-// その理由：父母から渡ってきたuseStateを息子が実行したら
-// 父母が実行されその息子たちも実行されることになる
+// 父母コンポーネントでは
 
 // propsを受ける時、各propsごとにtypeを設定する
 interface TodoWriteFormProps {
@@ -17,28 +13,27 @@ interface TodoWriteFormProps {
 
 type TodoListProps = {
   todos: string[]
-  setTodos: React.Dispatch<React.SetStateAction<string[]>>
+  removeTodo: (index: number) => void
 }
 
 type TodoListItemProps = {
   todo: string
   index: number
-  setTodos: React.Dispatch<React.SetStateAction<string[]>>
+  removeTodo: (index: number) => void
   todos: string[]
 }
 
 // TodoListの中のTodoListItem　component
-const TodoListItem = ({todo, index, setTodos, todos} : TodoListItemProps) => {
-
-  const removeTodo = () => {
-    const newTodos = todos.filter((_, _index) => {
-      // 削除ボタンを押したtodoのindexとは異なるindexを持つ
-      return index !== _index
-    });
-    // todoの配列をsetTodosに代入する
-    setTodos(newTodos)
-  }
+// removeTodoの名前が被るので別名を付けよう
+const TodoListItem = ({todo, index, removeTodo: _removeTodo} : TodoListItemProps) => {
   
+  const removeTodo = () => {
+    console.log("삭제");
+    
+    _removeTodo(index)
+  }
+
+
   return (
     // indexを利用して番号を付けよう
     <li>
@@ -49,7 +44,7 @@ const TodoListItem = ({todo, index, setTodos, todos} : TodoListItemProps) => {
 }
 
 // todoList component
-const TodoList = ({todos, setTodos}: TodoListProps) => {
+const TodoList = ({todos, removeTodo}: TodoListProps) => {
   return (
     <div>
       {/* todoの表記をulとliで表す */}
@@ -60,7 +55,7 @@ const TodoList = ({todos, setTodos}: TodoListProps) => {
             key={index} 
             index={index} 
             todo={todo}
-            setTodos={setTodos}
+            removeTodo={removeTodo}
             todos={todos}
           />
         ))}
@@ -77,8 +72,6 @@ const TodoWriteForm = ({ addTodo: _addTodo }: TodoWriteFormProps) => {
 
   // 関数の名前をリネームしよう
   const addTodo = () => {
-    console.log("addTodo2");
-    
     if(newTodoTitle.trim().length == 0) return;
 
     _addTodo(newTodoTitle)
@@ -107,19 +100,19 @@ const TodoWriteForm = ({ addTodo: _addTodo }: TodoWriteFormProps) => {
 
 
 const App = () => {
-  // const [newTodoTitle, setNewTodoTile] = useState('')
-  // string型の配列のタイプに設定
   const [todos, setTodos] = useState<string[]>([])
 
   
   // Todoを追加する関数
   const addTodo = (newTitle: string) => {
-    // 前と後ろのスペースや空白を入力した時リターンする
     if(newTitle.trim().length === 0) return;
     
     setTodos([...todos, newTitle.trim()])
-    // 入力後にはinputの中身を消す
-    
+  }
+
+  const removeTodo = (index: number) => {
+    const newTodos = todos.filter((_, _index) => index != _index)
+    setTodos(newTodos)
   }
 
   return (
@@ -132,7 +125,7 @@ const App = () => {
       <hr />
       <TodoList 
         todos={todos} 
-        setTodos={setTodos}  
+        removeTodo={removeTodo}  
       />
     </>
   )
