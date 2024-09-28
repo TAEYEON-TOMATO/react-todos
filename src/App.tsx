@@ -1,50 +1,87 @@
 import { useState } from 'react'
 import './App.css'
 // Reactの暗黙的ルール
-// 父母コンポーネントでは
 
 // propsを受ける時、各propsごとにtypeを設定する
 interface TodoWriteFormProps {
-  // newTodoTitle: string
-  // setNewTodoTile: React.Dispatch<React.SetStateAction<string>>
   addTodo: (newTodoTitle: string) => void
-  // addTodo: () => void
+
 }
 
 type TodoListProps = {
   todos: string[]
   removeTodo: (index: number) => void
+  modifyTodo: (index: number, todo: string) => void
 }
 
 type TodoListItemProps = {
   todo: string
   index: number
   removeTodo: (index: number) => void
-  todos: string[]
+  modifyTodo: (index: number, todo: string) => void
 }
 
 // TodoListの中のTodoListItem　component
-// removeTodoの名前が被るので別名を付けよう
-const TodoListItem = ({todo, index, removeTodo: _removeTodo} : TodoListItemProps) => {
+const TodoListItem = ({todo, index, removeTodo: _removeTodo, modifyTodo: _modifyTodo} : TodoListItemProps) => {
+  
+  const [ editMode, setEditMode ] = useState(false)
+  const [ newTodoTitle, setNewTodoTitle ] = useState(todo)
+  
+
+  const modifyTodo = () => {
+    if(newTodoTitle.trim().length == 0) return
+    _modifyTodo(index, newTodoTitle)
+    setEditMode(false)
+  }
   
   const removeTodo = () => {
-    console.log("삭제");
-    
     _removeTodo(index)
   }
+
+  const changeToEditMode = () => {
+    setEditMode(true)
+  }
+  
+  const changeToReadMode = () => {    
+    setNewTodoTitle(todo)
+    setEditMode(false)
+  }
+  
+
 
 
   return (
     // indexを利用して番号を付けよう
     <li>
-      {`${index + 1}: ${todo}`}
+      &nbsp;
+      {
+        editMode ? 
+        <>
+          <input 
+            type='text' 
+            placeholder="入力してください"
+            value={newTodoTitle}
+            onChange={(e) => setNewTodoTitle(e.target.value)} 
+          />
+          &nbsp;
+          <button onClick={modifyTodo}>修正完了</button>
+          &nbsp;
+          <button onClick={changeToReadMode}>キャンセル</button>
+        </> :
+        <>
+          {`${index + 1}: ${todo}`}
+          &nbsp;
+          <button onClick={changeToEditMode}>修正</button>
+        </> 
+      }
+      &nbsp;
       <button onClick={removeTodo}>削除</button>  
     </li>
   )
 }
 
 // todoList component
-const TodoList = ({todos, removeTodo}: TodoListProps) => {
+const TodoList = ({todos, removeTodo, modifyTodo}: TodoListProps) => {
   return (
     <div>
       {/* todoの表記をulとliで表す */}
@@ -56,7 +93,7 @@ const TodoList = ({todos, removeTodo}: TodoListProps) => {
             index={index} 
             todo={todo}
             removeTodo={removeTodo}
-            todos={todos}
+            modifyTodo={modifyTodo}
           />
         ))}
       </ul>
@@ -99,6 +136,7 @@ const TodoWriteForm = ({ addTodo: _addTodo }: TodoWriteFormProps) => {
 }
 
 
+// App
 const App = () => {
   const [todos, setTodos] = useState<string[]>([])
 
@@ -108,10 +146,17 @@ const App = () => {
     if(newTitle.trim().length === 0) return;
     
     setTodos([...todos, newTitle.trim()])
+    // 아래와 같이 쓰는건 연속적을 useState를 쓰고싶을떄다 
+    // setTodos((_todos) => [..._todos, newTitle.trim()])
   }
 
   const removeTodo = (index: number) => {
     const newTodos = todos.filter((_, _index) => index != _index)
+    setTodos(newTodos)
+  }
+
+  const modifyTodo = (index: number, todo: string) => {
+    const newTodos = todos.map((_todo, _index) => index != _index ? _todo : todo)
     setTodos(newTodos)
   }
 
@@ -125,7 +170,8 @@ const App = () => {
       <hr />
       <TodoList 
         todos={todos} 
-        removeTodo={removeTodo}  
+        removeTodo={removeTodo}
+        modifyTodo={modifyTodo}
       />
     </>
   )
