@@ -71,16 +71,17 @@ const TodoList = ({todos, setTodos}: TodoListProps) => {
 }
 
 // todo入力フォーム component
-// 
-const TodoWriteForm = ({ addTodo }: TodoWriteFormProps) => { 
+// addTodoの名が被るので別名を付けてみよう
+const TodoWriteForm = ({ addTodo: _addTodo }: TodoWriteFormProps) => { 
   const [ newTodoTitle, setNewTodoTitle ] = useState("")
 
-  const addTodo2 = () => {
+  // 関数の名前をリネームしよう
+  const addTodo = () => {
     console.log("addTodo2");
     
     if(newTodoTitle.trim().length == 0) return;
 
-    addTodo(newTodoTitle)
+    _addTodo(newTodoTitle)
 
     setNewTodoTitle("")
   }
@@ -94,8 +95,8 @@ const TodoWriteForm = ({ addTodo }: TodoWriteFormProps) => {
         onChange={(e) => setNewTodoTitle(e.target.value)}
       />
       &nbsp;
-      {/* パラメータがある関数をonClickに渡す場合は匿名関数で渡してあげる */}
-      <button onClick={addTodo2}>
+
+      <button onClick={addTodo}>
         追加
       </button>
     </>
