@@ -1,9 +1,15 @@
 # 방구석코딩 리액트 TODO LIST 수업
-youtube: https://www.youtube.com/watch?v=1yNNwzadc0c&list=PLmAWMAo-opQy4WyzBBH3qBNyYrxL6j-1i&index=1
+## 講座のリンク
+> youtube: https://www.youtube.com/watch?v=1yNNwzadc0c&list=PLmAWMAo-opQy4WyzBBH3qBNyYrxL6j-1i&index=1
 
 ## immerを使う場合
 > npm install immer
 
+## コンポーネントの構造
+App.tsx : 最上コンポーネント
+- TodoList.tsx : todoリストを表示
+ - TodoListItem.tsx : todoの内容、修正、削除
+- TodoWriteForm.tsx : todoの追加
 
 # React + TypeScript + Vite
 
