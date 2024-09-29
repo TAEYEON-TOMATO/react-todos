@@ -13,9 +13,8 @@ const TodoWriteForm = ({ addTodo: _addTodo }: TodoWriteFormProps) => {
   // 関数の名前をリネームしよう
   const addTodo = () => {
     if(newTodoTitle.trim().length == 0) return;
-
-    _addTodo(newTodoTitle)
-
+    const title = newTodoTitle.trim()
+    _addTodo(title)
     setNewTodoTitle("")
   }
 
