@@ -1,20 +1,31 @@
 import { useState } from 'react'
 
 // TodoWriteFormパラメータタイプ
-interface TodoWriteFormProps {
-  addTodo: (newTodoTitle: string) => void
-  
+interface todoStatusProps {
+  todoStatus : {
+    todos: {
+      id: number
+      title: string
+    }[];
+    lastTodoId: number;
+    addTodo: (newTodoTitle: string) => void;
+    removeTodo: (index: number) => void;
+    modifyTodo: (todo: {
+      id: number
+      title: string
+    }) => void;
+  }
 }
 // todo入力フォーム component
 // addTodoの名が被るので別名を付けてみよう
-const TodoWriteForm = ({ addTodo: _addTodo }: TodoWriteFormProps) => { 
+const TodoWriteForm = ({ todoStatus }:todoStatusProps) => { 
   const [ newTodoTitle, setNewTodoTitle ] = useState("")
 
   // 関数の名前をリネームしよう
   const addTodo = () => {
     if(newTodoTitle.trim().length == 0) return;
     const title = newTodoTitle.trim()
-    _addTodo(title)
+    todoStatus.addTodo(title)
     setNewTodoTitle("")
   }
 

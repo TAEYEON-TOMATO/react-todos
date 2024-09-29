@@ -9,13 +9,13 @@ type setTodosType = {
 // TodoListItemPropsパラメータタイプ
 type TodoListItemProps = {
   todo: setTodosType
-  index: number
-  removeTodo: (index: number) => void
-  modifyTodo: (index: number, todo: setTodosType) => void
+  id: number
+  removeTodo: (id: number) => void
+  modifyTodo: (todo: setTodosType) => void
 }
 
 // TodoListの中のTodoListItem　component
-const TodoListItem = ({todo, index, removeTodo: _removeTodo, modifyTodo: _modifyTodo} : TodoListItemProps) => {
+const TodoListItem = ({todo, id, removeTodo: _removeTodo, modifyTodo: _modifyTodo} : TodoListItemProps) => {
   
   const [ editMode, setEditMode ] = useState(false)
   const [ newTodoTitle, setNewTodoTitle ] = useState(todo)
@@ -24,12 +24,12 @@ const TodoListItem = ({todo, index, removeTodo: _removeTodo, modifyTodo: _modify
   const modifyTodo = () => {
     if(newTodoTitle.title.trim().length == 0) return
     
-    _modifyTodo(index, newTodoTitle)
+    _modifyTodo(newTodoTitle)
     setEditMode(false)
   }
   // 削除関数
   const removeTodo = () => {
-    _removeTodo(index)
+    _removeTodo(id)
   }
   // 修正入力欄をonにする関数
   const changeToEditMode = () => {
