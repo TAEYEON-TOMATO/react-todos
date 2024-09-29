@@ -1,3 +1,10 @@
+# 방구석코딩 리액트 TODO LIST 수업
+youtube: https://www.youtube.com/watch?v=1yNNwzadc0c&list=PLmAWMAo-opQy4WyzBBH3qBNyYrxL6j-1i&index=1
+
+## immerを使う場合
+> npm install immer
+
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
