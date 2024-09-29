@@ -1,17 +1,18 @@
 import { useState } from 'react'
 
-type setTodosType = {
-  id: number
-  title: string
-}
-
 
 // TodoListItemPropsパラメータタイプ
 type TodoListItemProps = {
-  todo: setTodosType
+  todo: {
+    id: number
+    title: string
+  }
   id: number
   removeTodo: (id: number) => void
-  modifyTodo: (todo: setTodosType) => void
+  modifyTodo: (todo: {
+    id: number
+    title: string
+  }) => void
 }
 
 // TodoListの中のTodoListItem　component

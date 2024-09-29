@@ -1,11 +1,5 @@
 import TodoListItem from "./TodoListItem"
 
-type setTodosType = {
-  id: number
-  title: string
-}
-
-
 // TodoListパラメータタイプ
 type todoStatusProps = {
   todoStatus : {
