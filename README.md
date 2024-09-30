@@ -7,8 +7,11 @@
 
 ## コンポーネントの構造
 App.tsx : 最上コンポーネント
+
 TodoList.tsx : todoリストを表示
+
 TodoListItem.tsx : todoの内容、修正、削除
+
 TodoWriteForm.tsx : todoの追加
 
 # React + TypeScript + Vite
